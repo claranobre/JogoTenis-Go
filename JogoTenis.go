@@ -4,11 +4,16 @@ import (
   "time"
   "math/rand"
 )
+/*
+Varíavel para caso o jogador tenha ganho o jogo anterior, no próximo ter um ponto de vantagem
+*/
 const vantagem int = 1
 /*
 Variáveis para o Score, Game, Sets e Match dos jogadores
 */
+/*Constante para verificar se o jogador vencedor tem pelo menos dois pontos a mais que o adversário*/
 const Pontos int = 2
+/*Pontos do jogadores 1 e 2*/
 var pontosj1, pontosj2 int
 /*
 Um Game é uma sequência de pontos marcados por um jogador, ganha quem marcar 4 pontos no total e
@@ -51,6 +56,15 @@ Os dois jogadores possuem dois estados:
 */
 var vencedor string
 
+/*func estadoJogador(estado chan bool){
+  est := <- estado
+  if estado = true{
+    fmt.Println("Jogador mandou a bola para o adversário")
+  }else{
+    fmt.Println("Jogador esperando para receber a bola")
+  }
+}*/
+
 func jogador1(jogador chan string){
   for{
     jogador <- "j1"
@@ -69,20 +83,16 @@ func painel(){
 
 func exibirPlacar(){
   fmt.Println("\n\nPLACAR\n\n")
-  fmt.Println("|Jogadores | Set 1| Pontos \n")
-  fmt.Println("jogador 1", gamesj1 , pontosj1)
-  fmt.Println("\n jogador 2", gamesj2,  pontosj2)
+  fmt.Println("|Jogadores | Set 1 | Jogo | Pontos | Resultado \n")
+  fmt.Println("jogador 1 ", setj1 , gamesj1, pontosj1, resultado)
+  fmt.Println("\n jogador 2 ", setj2, gamesj2, pontosj2, resultado)
 }
-
-/*func pontuar(from string){
-  for i := 0; i < 3; i++{
-    fmt.Println(from, ":", i)
-  }
-}*/
 
 func jogoTenis(jogador chan string){
   for{
+    exibirPlacar()
     jog := <- jogador
+    resultado = "perdeu"
     if rand.Float32() < 0.5{
       resultado = "venceu"
       if jog == "j1"{
@@ -101,7 +111,8 @@ func jogoTenis(jogador chan string){
         pontosj1++;
       }
     }
-    time.Sleep(time.Second * 1)
+    calcularPontos()
+    time.Sleep(time.Second * 2)
   }
 }
 
@@ -116,7 +127,7 @@ func calcularPontos(){
       set()
     }
     if setj1 >= Sets && setj1 >= setj2 + vantagem{
-      fmt.Println("Jogador vencedor")
+      return
     }
   }
 
@@ -130,7 +141,7 @@ func calcularPontos(){
       set()
     }
     if setj2 >= Sets && setj2 >= setj1 + vantagem{
-      fmt.Println("Jogador vencedor")
+      return
     }
   }
 }
@@ -191,7 +202,6 @@ func main(){
   go jogador2(jogador)
 
   go jogoTenis(jogador)
-  go exibirPlacar();
 
   /* Wait for 6 more seconds to let all go routine finish
   time.Sleep(time.Duration(6) * time.Second)
