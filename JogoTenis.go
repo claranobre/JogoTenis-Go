@@ -84,19 +84,18 @@ func painel(){
 }
 
 func exibirPlacar(){
-  var resultado string
   fmt.Println("\n\nPLACAR\n\n")
-  fmt.Println("|Jogadores | Set 1 | Jogo | Pontos | Resultado \n")
-  fmt.Println("jogador 1 ", setj1 , gamesj1, pontosj1, resultado)
-  fmt.Println("jogador 2 ", setj2, gamesj2, pontosj2, resultado)
+  fmt.Println("|Jogadores | Set 1 | Jogo | Pontos")
+  fmt.Println("jogador 1 ", setj1 , gamesj1, pontosj1)
+  fmt.Println("jogador 2 ", setj2, gamesj2, pontosj2)
 }
 
 func jogoTenis(jogador chan string){
   for{
     jog := <- jogador
-    //resultado = "perdeu"
+    resultado = "perdeu"
     if rand.Float32() < 0.5{
-      //resultado = "venceu"
+      resultado = "venceu"
       if jog == "j1"{
         vencedor = "j1"
         pontosj1++
@@ -113,10 +112,10 @@ func jogoTenis(jogador chan string){
               pontosj1++
             }
           }
+          calcularPontos()
+          exibirPlacar()
+          time.Sleep(time.Second * 2)
         }
-        calcularPontos()
-        exibirPlacar()
-        time.Sleep(time.Second * 2)
       }
 
       func calcularPontos(){
@@ -130,14 +129,14 @@ func jogoTenis(jogador chan string){
               set()
             }
             if setj1 >= Sets && setj1 >= setj2 + vantagem{
-              resultado = "ganhou"
+              fmt.Println("Jogador 1 venceu")
               return
             }
           }
 
           if vencedor == "j2"{
             if pontosj2 >= Pontos && pontosj2 >= pontosj1 + vantagem{
-              gamesj1++
+              gamesj2++
               pontosj2, pontosj1 = 0, 0
             }
             if gamesj2 >= Games && gamesj2 >= gamesj1 + vantagem{
@@ -145,7 +144,7 @@ func jogoTenis(jogador chan string){
               set()
             }
             if setj2 >= Sets && setj2 >= setj1 + vantagem{
-              resultado = "ganhou"
+              fmt.Println("Jogador 2 venceu")
               return
             }
           }
