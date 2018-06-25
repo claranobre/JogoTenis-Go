@@ -58,7 +58,7 @@ var vencedor string
 
 /*func estadoJogador(estado chan bool){
   est := <- estado
-  if estado = true{
+  if estado == true{
     fmt.Println("Jogador mandou a bola para o adversário")
   }else{
     fmt.Println("Jogador esperando para receber a bola")
@@ -68,12 +68,14 @@ var vencedor string
 func jogador1(jogador chan string){
   for{
     jogador <- "j1"
+    //estadoJogador()
   }
 }
 
 func jogador2(jogador chan string){
   for{
     jogador <- "j2"
+    //estadoJogador()
   }
 }
 
