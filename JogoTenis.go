@@ -86,12 +86,13 @@ func painel(){
 func exibirPlacar(){
   fmt.Println("\n\nPLACAR\n\n")
   fmt.Println("|Jogadores | Set 1 | Jogo | Pontos")
-  fmt.Println("jogador 1 ", setj1 , gamesj1, pontosj1)
+  fmt.Println("jogador 1 ", setj1, gamesj1, pontosj1)
   fmt.Println("jogador 2 ", setj2, gamesj2, pontosj2)
 }
 
 func jogoTenis(jogador chan string){
   for{
+    calcularPontos()
     jog := <- jogador
     resultado = "perdeu"
     if rand.Float32() < 0.5{
@@ -112,7 +113,6 @@ func jogoTenis(jogador chan string){
               pontosj1++
             }
           }
-          calcularPontos()
           exibirPlacar()
           time.Sleep(time.Second * 2)
         }
