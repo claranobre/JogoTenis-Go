@@ -33,10 +33,10 @@ var matchj1, matchj2 int
 
 /*
 func f(s string) {
-    // Sleep up to half a second
-    delay := time.Duration(r.Int() % 500) * time.Millisecond
-    time.Sleep(delay)
-    fmt.Println(s)
+// Sleep up to half a second
+delay := time.Duration(r.Int() % 500) * time.Millisecond
+time.Sleep(delay)
+fmt.Println(s)
 }*/
 /*
 Um Set é um conjunto de games, vence o jogador que ganhar pelo menos 6 games e pelo menos 2 games
@@ -57,12 +57,12 @@ Os dois jogadores possuem dois estados:
 var vencedor string
 
 /*func estadoJogador(estado chan bool){
-  est := <- estado
-  if estado == true{
-    fmt.Println("Jogador mandou a bola para o adversário")
-  }else{
-    fmt.Println("Jogador esperando para receber a bola")
-  }
+est := <- estado
+if estado == true{
+fmt.Println("Jogador mandou a bola para o adversário")
+}else{
+fmt.Println("Jogador esperando para receber a bola")
+}
 }*/
 
 func jogador1(jogador chan string){
@@ -84,113 +84,116 @@ func painel(){
 }
 
 func exibirPlacar(){
+  var resultado string
   fmt.Println("\n\nPLACAR\n\n")
   fmt.Println("|Jogadores | Set 1 | Jogo | Pontos | Resultado \n")
   fmt.Println("jogador 1 ", setj1 , gamesj1, pontosj1, resultado)
-  fmt.Println("\n jogador 2 ", setj2, gamesj2, pontosj2, resultado)
+  fmt.Println("jogador 2 ", setj2, gamesj2, pontosj2, resultado)
 }
 
 func jogoTenis(jogador chan string){
   for{
-    exibirPlacar()
     jog := <- jogador
-    resultado = "perdeu"
+    //resultado = "perdeu"
     if rand.Float32() < 0.5{
-      resultado = "venceu"
+      //resultado = "venceu"
       if jog == "j1"{
         vencedor = "j1"
-        pontosj1++;
-      }else{
-        pontosj2++;
-        vencedor = "j2"
+        pontosj1++
+        }else{
+          pontosj2++
+          vencedor = "j2"
+        }
+        }else{
+          if jog == "j1"{
+            vencedor = "j2"
+            pontosj2++
+            }else{
+              vencedor = "j1"
+              pontosj1++
+            }
+          }
+        }
+        calcularPontos()
+        exibirPlacar()
+        time.Sleep(time.Second * 2)
       }
-    }else{
-      if jog == "j1"{
-        vencedor = "j2"
-        pontosj2++;
-      }else{
-        vencedor = "j1"
-        pontosj1++;
+
+      func calcularPontos(){
+          if vencedor == "j1"{
+            if pontosj1 >= Pontos && pontosj1 >= pontosj2 + vantagem{
+              gamesj1++
+              pontosj1, pontosj2 = 0, 0
+            }
+            if gamesj1 >= Games && gamesj1 >= gamesj2 + vantagem{
+              setj1++
+              set()
+            }
+            if setj1 >= Sets && setj1 >= setj2 + vantagem{
+              resultado = "ganhou"
+              return
+            }
+          }
+
+          if vencedor == "j2"{
+            if pontosj2 >= Pontos && pontosj2 >= pontosj1 + vantagem{
+              gamesj1++
+              pontosj2, pontosj1 = 0, 0
+            }
+            if gamesj2 >= Games && gamesj2 >= gamesj1 + vantagem{
+              setj2++
+              set()
+            }
+            if setj2 >= Sets && setj2 >= setj1 + vantagem{
+              resultado = "ganhou"
+              return
+            }
+          }
       }
-    }
-    calcularPontos()
-    time.Sleep(time.Second * 2)
-  }
-}
 
-func calcularPontos(){
-  if vencedor == "j1"{
-    if pontosj1 >= Pontos && pontosj1 >= pontosj2 + vantagem{
-      gamesj1++;
-      pontosj1, pontosj2 = 0, 0
+      /*O Jogo será composto de apenas um Set
+      func marcarSet(){
+      if game1 ==  1{
+      gamesj1 := 1;
+      }else if game1 == 2{
+      gamesj1 := 2;
     }
-    if gamesj1 >= Games && gamesj1 >= gamesj2 + vantagem{
-      setj1++
-      set()
-    }
-    if setj1 >= Sets && setj1 >= setj2 + vantagem{
-      return
-    }
-  }
-
-  if vencedor == "j2"{
-    if pontosj2 >= Pontos && pontosj2 >= pontosj1 + vantagem{
-      gamesj1++
-      pontosj2, pontosj1 = 0, 0
-    }
-    if gamesj2 >= Games && gamesj2 >= gamesj1 + vantagem{
-      setj2++
-      set()
-    }
-    if setj2 >= Sets && setj2 >= setj1 + vantagem{
-      return
-    }
-  }
-}
-
-/*O Jogo será composto de apenas um Set
-func marcarSet(){
-  if game1 ==  1{
-    gamesj1 := 1;
-  }else if game1 == 2{
-    gamesj1 := 2;
-  }
-  if game1 == 3{
+    if game1 == 3{
     gamesj1 := 3;
-  }else if game1 == 4{
+    }else if game1 == 4{
     gamesj1 := 4;
   }
   if game1 == 5{
-    gamesj1 := 5;
+  gamesj1 := 5;
   }else if game1 == 6{
-    gamesj1 = 6;
-  }
-  if game2 == 1{
-    gamesj2 := 1;
-  }else if game2 == 2{
-    gamesj2 := 2;
-  }
-  if game2 == 3{
-    gamesj2 := 3;
-  }else if game2 == 4{
-    gamesj2 := 4;
-  }
-  if game2 == 5{
-    gamesj2 := 5;
-  }else if game2 == 6{
-    gamesj2 := 6;
-  }*/
-  /*
-  Condição de parada do jogo de cada jogador
+  gamesj1 = 6;
+}
+if game2 == 1{
+gamesj2 := 1;
+}else if game2 == 2{
+gamesj2 := 2;
+}
+if game2 == 3{
+gamesj2 := 3;
+}else if game2 == 4{
+gamesj2 := 4;
+}
+if game2 == 5{
+gamesj2 := 5;
+}else if game2 == 6{
+gamesj2 := 6;
+}*/
+/*
+Condição de parada do jogo de cada jogador
 
-  if (gamesj1 == 6 || gamesj2 == 6){
-    game2 := 0;
-    game1 := 0;
-  }
-  if (gamesj2 == 6 || gamesj1 == 6){
-    game1 := 0;
-    game2 := 0;
-  }
+if (gamesj1 == 6 || gamesj2 == 6){
+game2 := 0;
+game1 := 0;
+}
+if (gamesj2 == 6 || gamesj1 == 6){
+game1 := 0;
+game2 := 0;
+}
 }*/
 
 func main(){
@@ -209,5 +212,5 @@ func main(){
   time.Sleep(time.Duration(6) * time.Second)
   fmt.Println("--- Done.")*/
   var input string
-    fmt.Scanln(&input)
+  fmt.Scanln(&input)
 }
